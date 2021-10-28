@@ -8,7 +8,7 @@ module.exports.Database = (collection) => new Promise(async (resolve, reject) =>
     try {
         if(!connection){ // Singleton pattem
             const client = new MongoClient(Config.mongoUri);
-            connection = await client.connect();
+            connection   = await client.connect();
             debug('Conexion establecida');
         }
         debug("Reutilizando conexion");
