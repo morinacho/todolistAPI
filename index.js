@@ -1,8 +1,9 @@
-const express = require('express');
-const debug   = require('debug')('app:server'); 
-const app     = express();
-const port = 3000;
+const express  = require('express');
+const debug    = require('debug')('app:server'); 
+const {Config} = require('./src/config/index');
+const app      = express();
 
-app.get('/', (req, res) => res.send('Hello world!'))
+app.use(express.json());
 
-app.listen(port, () => console.log(`Example app listening on port port!`))
+
+app.listen(Config.port, () => debug(`Servidor escuchando en el puerto ${Config.port}`))
