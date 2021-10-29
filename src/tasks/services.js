@@ -18,8 +18,23 @@ const create = async (task) => {
     return result.insertedId;
 }
 
+const update = async (task) =>{
+    const collection = await Database(COLLECTION);
+    const options = {upsert: false}; // Si no existe la tarea no la crea, True crea la tarea si no exite
+    let result = await collection.updateOne({_id: ObjectId(task.id)}, {$set: task.body}, options);
+    return result;
+}
+
+const deleteTask = async (id) => {
+    const collection = await Database(COLLECTION);
+    let result = await collection.deleteOne({_id: ObjectId(id)});
+    return result;
+}
+
 module.exports.TaskService = {
     getAll,
     getById,
     create,
+    update,
+    deleteTask,
 }

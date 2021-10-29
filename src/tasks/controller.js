@@ -1,7 +1,7 @@
 const debug          = require('debug')('app:task-controller');
 const createError    = require('http-errors');
 const {Response}     = require('../common/response');
-const {TaskService} = require('./services');
+const {TaskService}  = require('./services');
 
 module.exports.TaskConstroller = {
     getTasks: async(req, res) => {
@@ -43,6 +43,35 @@ module.exports.TaskConstroller = {
             debug(error);
             Response.error(res);
         }
+    },
+    updateTask: async(req, res) => {
+        try {
+            const {body, params:{id}} = req; 
+            const task = {
+                'id': id,
+                'body': body
+            }
+
+            if(!body || Object.keys(body).length === 0){
+                Response.error(res, new createError.BadRequest());
+            }
+            else{
+                const result = await TaskService.update(task);
+                Response.success(res,201, "Tarea actualizada", result)
+            }
+        } catch (error) {
+            debug(error);
+            Response.error(res);
+        }
+    },
+    deleteTask: async(req, res) => {
+        try {
+            const {params: {id}} =  req;
+            let result = await TaskService.deleteTask(id);
+            Response.success(res, 200, "Tarea eliminada", id);
+        } catch (error) {
+            debug(error);
+            Response.error(res);
+        }
     }
-    
 }
